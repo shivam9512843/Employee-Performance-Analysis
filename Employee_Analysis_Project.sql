@@ -33,8 +33,7 @@ DELETE FROM Employees
 LIMIT 3;
 
 
-SELECT * from  Employees
-;
+SELECT * from  Employees;
 
 -- This table will track the projects assigned to each employee, including completion and deadline status.
 
@@ -65,7 +64,7 @@ VALUES ('Project A', 1, '2023-08-10', '2023-08-15', 'Completed'),
        ('Project A', 13, '2023-09-01', '2023-09-05', 'Pending')
        ;
 
-SELECT * FROM Projects;
+SELECT * FROM  projects;
 
 -- This table will store attendance data for employees.
 
@@ -165,3 +164,60 @@ FROM Employees e
 JOIN Projects p ON e.employee_id = p.employee_id
 JOIN Performance_Reviews r ON e.employee_id = r.employee_id
 GROUP BY e.department;
+
+
+-- query to list all employees who joined the company after January 1, 2020.
+
+SELECT * FROM employees
+WHERE join_date >= '2020-01-01'
+ORDER BY join_date 
+;
+
+--  query to display the total number of projects assigned to each employee.
+SELECT e.name, COUNT(project_id) AS TOTAL_Project 
+FROM employees E
+JOIN projects P ON E.employee_id = P.employee_id
+GROUP BY e.name
+;
+
+
+-- Get the number of employees in each department:
+
+SELECT department, COUNT(employee_id) AS total_emp
+from employees
+group by department
+;
+
+-- Find the names of employees who were absent on '2023-09-21':
+SELECT e.name, a.date, a.status
+From employees e
+JOIN attendance a ON a.employee_id = e.employee_id
+WHERE a.date = '2023-09-21' AND status = 'Absent'
+;
+
+
+-- Retrieve the total number of days each employee was present
+SELECT e.name, a.status, count(*)
+From employees e
+JOIN attendance a ON a.employee_id = e.employee_id
+WHERE status = 'Present'
+group by e.name
+;
+
+-- List the employees who completed at least one project:
+
+SELECT e.name 
+FROM employees e
+JOIN projects p ON p.employee_id = e.employee_id
+WHERE status = 'Completed'
+GROUP BY e.name
+;
+
+-- Find the employee with the highest average performance review score:
+SELECT  e.name, AVG(r.review_score) AS avg_Score 
+FROM employees e
+JOIN Performance_Reviews AS r ON r.employee_id = e.employee_id
+group by e.name
+ORDER BY avg_Score DESC
+limit 1
+;
