@@ -238,3 +238,25 @@ JOIN Performance_Reviews pr
 ON e.employee_id = pr.employee_id
 WHERE pr.review_score = 5;
 
+SELECT name,department,join_date
+FROM employees
+WHERE department = 'Marketing'
+ORDER BY join_date ASC; 
+
+-- Employees with Most Projects
+-- Identify the employees who are assigned the most number of projects. Display their names and the total count of projects.
+SELECT e.employee_id, e.name, COUNT(p.project_name) AS Total_Count
+FROM employees AS e
+JOIN projects AS p
+ON e.employee_id = p.employee_id
+GROUP BY e.employee_id;
+
+-- Pending Projects by Department
+-- Count the number of pending projects for each department by grouping based on the employee's department.
+SELECT e.department, COUNT(status) 
+FROM employees AS e
+JOIN projects AS p
+ON e.employee_id = p.employee_id
+GROUP BY e.department;
+
+
